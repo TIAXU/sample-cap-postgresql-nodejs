@@ -1,0 +1,54 @@
+---
+_schema-version: '3.1'
+ID: devtoberfest
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm install --production
+        - npx cds build --production
+modules:
+  - name: devtoberfest-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: devtoberfest-db
+  - name: devtoberfest-db-deployer
+    type: custom
+    path: gen/db
+    parameters:
+      buildpacks: [https://github.com/cloudfoundry/apt-buildpack#v0.3.0, nodejs_buildpack] 
+      no-route: true
+      no-start: true
+      disk-quota: 2GB
+      memory: 512MB
+      tasks:
+      - name: deploy_to_postgresql
+        command: chmod 755 deploy.sh && ./deploy.sh
+        disk-quota: 2GB
+        memory: 512MB      
+    build-parameters:
+      ignore: ["node_modules/"]
+    requires:
+      - name: devtoberfest-db 
+resources:
+  - name: devtoberfest-db
+    type: org.cloudfoundry.existing-service
+  # - name: devtoberfest-db
+  #   parameters:
+  #     path: ./pg-options.json
+  #     service: postgresql-db
+  #     service-plan: standard
+  #     skip-service-updates:
+  #       parameters: true
+  #   type: org.cloudfoundry.managed-service

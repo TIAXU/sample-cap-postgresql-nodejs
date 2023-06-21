@@ -6,32 +6,41 @@
     "license": "UNLICENSED",
     "private": true,
     "dependencies": {
-        "@sap/cds": "5.1.5",
-        "cds-dbm": "^0.0.26",
-        "cds-pg": "0.0.51",
+        "@sap/cds": "~6.6.1",
+        "cds-dbm": "~0.1.4",
+        "cds-pg": "~0.1.35",
         "express": "^4"
     },
     "devDependencies": {
-        "sqlite3": "^5"
+        "mbt": "~1.0.16"
     },
     "cds": {
+        "build": {
+            "tasks": [{
+                    "use": "node-cf",
+                    "for": "node-cf",
+                    "src": "srv"
+                },
+                {
+                    "use": "cds-dbm/dist/build/postgres-cf",
+                    "for": "postgres-cf",
+                    "src": "db",
+                    "options": {
+                        "deployCmd": "npx cds-dbm deploy --load-via delta --auto-undeploy"
+                    }
+                }
+            ]
+        },
         "requires": {
             "db": {
-                "kind": "database"
+                "kind": "postgres",
+                "dialect": "plain"
             },
-            "database": {
+            "postgres": {
                 "impl": "cds-pg",
-                "dialect": "plain",
                 "model": [
                     "srv"
-                ],
-                "credentials": {
-                    "host": "localhost",
-                    "port": 5432,
-                    "database": "devtoberfest",
-                    "user": "postgres",
-                    "password": "postgres"
-                }
+                ]
             }
         },
         "migrations": {
@@ -49,6 +58,9 @@
         }
     },
     "scripts": {
-        "start": "cds-serve"
+        "start": "npx cds run",
+        "start:docker": "docker-compose up",
+        "build:cf": "mbt build",
+        "deploy:cf": "cf deploy mta_archives/devtoberfest_1.0.0.mtar"
     }
 }
