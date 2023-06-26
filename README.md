@@ -1,3 +1,4 @@
+## About This Repository
 Based on the blogs [Getting started with CAP on PostgreSQL (Node.js)](https://blogs.sap.com/2020/11/16/getting-started-with-cap-on-postgresql-node.js/) and [Run and Deploy CAP with PostgreSQL on SAP BTP Cloud Foundry (Node.js)](https://blogs.sap.com/2020/11/30/run-and-deploy-cap-with-postgresql-on-sap-cloud-platform-cloud-foundry-node.js/), several issues that were originally present have been addressed, resulting in this project.
 
 Dependency versions for **local test**:
@@ -23,3 +24,10 @@ Dependency versions for **deployment to Cloud Foundry**:
 The version of **APT Buildpack**:
 
 https://github.com/cloudfoundry/apt-buildpack#v0.3.0
+
+## Further References
+- `cds-pg`: https://www.npmjs.com/package/cds-pg
+- `cds-dbm`: https://www.npmjs.com/package/cds-dbm
+- Another example app already using `cds-dbm` in combination with `cds-pg`: https://github.com/gregorwolf/pg-beershop
+
+
