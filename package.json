@@ -33,11 +33,11 @@
         },
         "requires": {
             "db": {
-                "kind": "postgres",
-                "dialect": "plain"
+                "kind": "database"
             },
-            "postgres": {
+            "database": {
                 "impl": "cds-pg",
+                "dialect": "plain",
                 "model": [
                     "srv"
                 ]
