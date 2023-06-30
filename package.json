@@ -17,11 +17,11 @@
     "cds": {
         "requires": {
             "db": {
-                "kind": "database"
+                "kind": "postgres",
+                "dialect": "plain"
             },
-            "database": {
+            "postgres": {
                 "impl": "cds-pg",
-                "dialect": "plain",
                 "model": [
                     "srv"
                 ],
